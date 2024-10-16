@@ -3,14 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title if title else "Toolset" }}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Your Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a> |
-        <a href="{{ url_for('time_calculator') }}">Time Calculator</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Toolset</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('time_calculator') }}">Time Calculator</a>
+                </li>
+                <!-- Add more navigation links here -->
+            </ul>
+        </div>
     </nav>
-    <hr>
-    {% block content %}{% endblock %}
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Bootstrap JS and dependencies (Optional for Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

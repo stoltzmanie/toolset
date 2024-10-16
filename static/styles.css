@@ -1,18 +1,21 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-nav a {
-    margin: 0 10px;
-    text-decoration: none;
-}
+/* Add or modify styles as needed */
 
 form label {
-    font-weight: bold;
+    display: block;
+    margin-top: 10px;
 }
 
-input[type="submit"] {
-    padding: 5px 15px;
-    font-size: 16px;
+form input[type="number"],
+form input[type="text"],
+form input[type="datetime-local"] {
+    width: 200px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 5px;
 }

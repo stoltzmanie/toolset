@@ -1,18 +1,243 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Shift Time Calculator</h1>
+<h1 class="mb-4">Shift Time Calculator</h1>
 <form method="POST">
-    <label for="start_datetime">Start Date and Time:</label><br>
-    <input type="datetime-local" id="start_datetime" name="start_datetime" value="{{ start_input }}" required><br><br>
+    <!-- Shifts Row -->
+    <div class="row">
+        <!-- Shift 1 -->
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Shift 1
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="start_datetime_1">Start Date and Time:</label>
+                        <input type="datetime-local" class="form-control" id="start_datetime_1" name="start_datetime_1" value="{{ results['start_input_1'] }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_datetime_1">End Date and Time:</label>
+                        <input type="datetime-local" class="form-control" id="end_datetime_1" name="end_datetime_1" value="{{ results['end_input_1'] }}">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <label for="end_datetime">End Date and Time:</label><br>
-    <input type="datetime-local" id="end_datetime" name="end_datetime" value="{{ end_input }}" required><br><br>
+        <!-- Shift 2 -->
+        <div class="col-md-4">
+            <div class="card mb-3" id="shift2_card" style="display: none;">
+                <div class="card-header">
+                    Shift 2
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="start_datetime_2">Start Date and Time:</label>
+                        <input type="datetime-local" class="form-control" id="start_datetime_2" name="start_datetime_2" value="{{ results['start_input_2'] }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_datetime_2">End Date and Time:</label>
+                        <input type="datetime-local" class="form-control" id="end_datetime_2" name="end_datetime_2" value="{{ results['end_input_2'] }}">
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary mb-3" id="toggle_shift2">Add Shift 2</button>
+        </div>
 
-    <input type="submit" value="Calculate">
+        <!-- Shift 3 -->
+        <div class="col-md-4">
+            <div class="card mb-3" id="shift3_card" style="display: none;">
+                <div class="card-header">
+                    Shift 3
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="start_datetime_3">Start Date and Time:</label>
+                        <input type="datetime-local" class="form-control" id="start_datetime_3" name="start_datetime_3" value="{{ results['start_input_3'] }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_datetime_3">End Date and Time:</label>
+                        <input type="datetime-local" class="form-control" id="end_datetime_3" name="end_datetime_3" value="{{ results['end_input_3'] }}">
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary mb-3" id="toggle_shift3">Add Shift 3</button>
+        </div>
+    </div>
+
+    <!-- Breaks -->
+    <div class="card mb-3">
+        <div class="card-header">
+            Breaks
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label>Paid Break Duration:</label>
+                <div class="d-flex align-items-center">
+                    <div class="input-group input-group-sm mr-2" style="max-width: 120px;">
+                        <input type="number" class="form-control" name="paid_break_hours" min="0" max="12" value="{{ results.paid_break_hours }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text">Hours</span>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-sm" style="max-width: 120px;">
+                        <input type="number" class="form-control" name="paid_break_minutes" min="0" max="59" value="{{ results.paid_break_minutes }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text">Minutes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Unpaid Break Duration:</label>
+                <div class="d-flex align-items-center">
+                    <div class="input-group input-group-sm mr-2" style="max-width: 120px;">
+                        <input type="number" class="form-control" name="unpaid_break_hours" min="0" max="12" value="{{ results.unpaid_break_hours }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text">Hours</span>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-sm" style="max-width: 120px;">
+                        <input type="number" class="form-control" name="unpaid_break_minutes" min="0" max="59" value="{{ results.unpaid_break_minutes }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text">Minutes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Normal Shift Length -->
+    <div class="card mb-3">
+        <div class="card-header">
+            Normal Shift Length
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label>Normal Shift Length:</label>
+                <div class="d-flex align-items-center">
+                    <div class="input-group input-group-sm mr-2" style="max-width: 120px;">
+                        <input type="number" class="form-control" name="normal_shift_hours" min="0" max="24" value="{{ results.normal_shift_hours }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text">Hours</span>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-sm" style="max-width: 120px;">
+                        <input type="number" class="form-control" name="normal_shift_minutes" min="0" max="59" value="{{ results.normal_shift_minutes }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text">Minutes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="overtime_rate">Overtime Multiplier:</label>
+                <input type="number" class="form-control input-sm" id="overtime_rate" name="overtime_rate" step="0.01" min="0" value="{{ results.overtime_rate_input }}">
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional Pay Information -->
+    <div class="card mb-3">
+        <div class="card-header">
+            Pay Information (Optional)
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="currency">Currency:</label>
+                <input type="text" class="form-control" id="currency" name="currency" value="{{ results.currency }}" placeholder="R, $, €, etc.">
+            </div>
+            <div class="form-group">
+                <label for="pay_frequency">Pay Frequency:</label>
+                <select class="form-control" id="pay_frequency" name="pay_frequency">
+                    <option value="">Select Frequency</option>
+                    <option value="hourly" {% if results.pay_frequency == 'hourly' %}selected{% endif %}>Hourly</option>
+                    <option value="daily" {% if results.pay_frequency == 'daily' %}selected{% endif %}>Daily</option>
+                    <option value="weekly" {% if results.pay_frequency == 'weekly' %}selected{% endif %}>Weekly</option>
+                    <option value="monthly" {% if results.pay_frequency == 'monthly' %}selected{% endif %}>Monthly</option>
+                    <option value="yearly" {% if results.pay_frequency == 'yearly' %}selected{% endif %}>Yearly</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pay_rate">Pay Rate:</label>
+                <input type="number" class="form-control" id="pay_rate" name="pay_rate" step="0.01" min="0" value="{{ results.pay_rate }}">
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Calculate</button>
 </form>
 
-{% if total_hours %}
-    <h2>Total Working Hours: {{ total_hours }}</h2>
+{% if results.error %}
+    <div class="alert alert-danger mt-4">
+        {{ results.error }}
+    </div>
 {% endif %}
+
+{% if results.total_shift %}
+    <h2 class="mt-5">Results:</h2>
+    <ul>
+        <li><strong>Total Shift Duration:</strong> {{ results.total_shift[0] }} hours {{ results.total_shift[1] }} minutes ({{ results.total_shift_decimal }} hours)</li>
+        <li><strong>Total Break Duration:</strong> {{ results.total_break_duration[0] }} hours {{ results.total_break_duration[1] }} minutes ({{ results.total_break_duration_decimal }} hours)</li>
+        <li><strong>Total Hours Worked:</strong> {{ results.total_work_time[0] }} hours {{ results.total_work_time[1] }} minutes ({{ results.total_work_time_decimal }} hours)</li>
+        <li><strong>Regular Hours Worked:</strong> {{ results.regular_hours[0] }} hours {{ results.regular_hours[1] }} minutes ({{ results.regular_hours_decimal }} hours)</li>
+        <li><strong>Overtime Hours:</strong> {{ results.overtime_hours[0] }} hours {{ results.overtime_hours[1] }} minutes ({{ results.overtime_hours_decimal }} hours)</li>
+        <li><strong>Adjusted Overtime Hours:</strong> {{ results.adjusted_overtime_hours }} hours</li>
+        <li><strong>Total Equivalent Hours:</strong> {{ results.total_equivalent_hours }} hours</li>
+        {% if results.regular_pay_formatted %}
+            <li><strong>Regular Pay:</strong> {{ results.regular_pay_formatted }}</li>
+            <li><strong>Overtime Pay:</strong> {{ results.overtime_pay_formatted }}</li>
+            <li><strong>Total Pay:</strong> {{ results.total_shift_pay_formatted }}</li>
+        {% endif %}
+    </ul>
+
+    <h3 class="mt-4">Entered Information:</h3>
+    <ul>
+        {% for shift in results.shifts %}
+            <li><strong>Shift {{ loop.index }} Start:</strong> {{ shift[0] }}</li>
+            <li><strong>Shift {{ loop.index }} End:</strong> {{ shift[1] }}</li>
+        {% endfor %}
+        <li><strong>Paid Break Duration:</strong> {{ results.paid_break_hours }} hours {{ results.paid_break_minutes }} minutes</li>
+        <li><strong>Unpaid Break Duration:</strong> {{ results.unpaid_break_hours }} hours {{ results.unpaid_break_minutes }} minutes</li>
+        <li><strong>Normal Shift Length:</strong> {{ results.normal_shift_hours }} hours {{ results.normal_shift_minutes }} minutes</li>
+        <li><strong>Overtime Multiplier:</strong> {{ results.overtime_rate_input }}</li>
+        {% if results.pay_frequency %}
+            <li><strong>Currency:</strong> {{ results.currency }}</li>
+            <li><strong>Pay Frequency:</strong> {{ results.pay_frequency|capitalize }}</li>
+            <li><strong>Pay Rate:</strong> {{ results.pay_rate }}</li>
+        {% endif %}
+    </ul>
+{% endif %}
+
+<!-- JavaScript to handle shift toggling -->
+<script>
+    document.getElementById('toggle_shift2').addEventListener('click', function() {
+        var shift2Card = document.getElementById('shift2_card');
+        if (shift2Card.style.display === 'none') {
+            shift2Card.style.display = 'block';
+            this.textContent = 'Remove Shift 2';
+        } else {
+            shift2Card.style.display = 'none';
+            this.textContent = 'Add Shift 2';
+            // Clear Shift 2 inputs
+            document.getElementById('start_datetime_2').value = '';
+            document.getElementById('end_datetime_2').value = '';
+        }
+    });
+
+    document.getElementById('toggle_shift3').addEventListener('click', function() {
+        var shift3Card = document.getElementById('shift3_card');
+        if (shift3Card.style.display === 'none') {
+            shift3Card.style.display = 'block';
+            this.textContent = 'Remove Shift 3';
+        } else {
+            shift3Card.style.display = 'none';
+            this.textContent = 'Add Shift 3';
+            // Clear Shift 3 inputs
+            document.getElementById('start_datetime_3').value = '';
+            document.getElementById('end_datetime_3').value = '';
+        }
+    });
+</script>
 {% endblock %}
