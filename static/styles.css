@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+form label {
+    font-weight: bold;
+}
+
+input[type="submit"] {
+    padding: 5px 15px;
+    font-size: 16px;
+}

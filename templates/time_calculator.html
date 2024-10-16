@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Shift Time Calculator</h1>
+<form method="POST">
+    <label for="start_datetime">Start Date and Time:</label><br>
+    <input type="datetime-local" id="start_datetime" name="start_datetime" value="{{ start_input }}" required><br><br>
+
+    <label for="end_datetime">End Date and Time:</label><br>
+    <input type="datetime-local" id="end_datetime" name="end_datetime" value="{{ end_input }}" required><br><br>
+
+    <input type="submit" value="Calculate">
+</form>
+
+{% if total_hours %}
+    <h2>Total Working Hours: {{ total_hours }}</h2>
+{% endif %}
+{% endblock %}
